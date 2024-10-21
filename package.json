@@ -1,0 +1,27 @@
+{
+  "name": "Gestion de trabajadores",
+  "version": "1.0.0",
+  "description": "sistema de recursos humanos en node.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "api",
+    "rest",
+    "nodejs",
+    "express"
+  ],
+  "author": "Alma González",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "nodemon": "^3.0.1",
+    "redis": "^4.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
+  }
+}

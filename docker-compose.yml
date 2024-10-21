@@ -1,0 +1,52 @@
+version: '3.4'
+
+services:
+  api:
+    build: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASSWORD: 
+      DB_NAME: rrhh
+      REDIS_HOST: redis  # Agrega la variable de entorno para Redis
+      REDIS_PORT: 6379
+    volumes:
+      - .:/app  # Asegúrate de que esta ruta sea correcta
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: rrhh
+      MYSQL_USER: admin  # Agrega un usuario (opcional)
+      MYSQL_PASSWORD: admin123  # Agrega una contraseña para el usuario (opcional)
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d  
+
+    ports:
+      - "3307:3306"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:

@@ -1,0 +1,152 @@
+
+# API de Gestión de Empleados
+
+Esta es una API REST para gestionar empleados, que permite realizar operaciones CRUD (Crear, Leer, Actualizar, Borrar) sobre los empleados en una base de datos. La API incluye un manejo exhaustivo de los códigos HTTP, paginación de resultados y manejo de caché con Redis.
+
+## Requisitos
+
+- **Docker**
+- **Docker Compose**
+- **Node.js** (versión 14 o superior)
+- **MySQL** (a través de XAMPP)
+- **Redis**
+- **Puertos**: Asegúrate de que los puertos **4000**, **3307**, y **6379** estén libres para su uso.
+
+### Instalación de Requisitos
+
+1. **Node.js**: Descarga e instala desde su [página oficial](https://nodejs.org/en).
+2. **Docker y Docker Compose**: Descarga e instala desde la [página oficial de Docker](https://www.docker.com/get-started).
+3. **MySQL**: Asegúrate de tener MySQL instalado y configurado. Puedes usar XAMPP para facilitar la instalación.
+4. **Redis**: Instala Redis y asegúrate de que esté ejecutándose. Puedes seguir las instrucciones de instalación en la [página oficial de Redis](https://redis.io/docs/getting-started/).
+
+## Instalación de la API
+
+1. Clona este repositorio en el directorio de tu preferencia:
+
+   ```bash
+   git clone https://github.com/tu_usuario/tu_repositorio.git
+   cd tu_repositorio
+   ```
+
+2. Instala las dependencias de Node.js:
+
+   ```bash
+   npm install
+   ```
+
+3. **Si no se instalan automáticamente**, asegúrate de instalar las dependencias de Swagger:
+
+   ```bash
+   npm install swagger-ui-express swagger-jsdoc
+   ```
+
+4. Construye y levanta los contenedores usando Docker Compose:
+
+   ```bash
+   docker-compose build
+   docker-compose up -d
+   ```
+
+## Uso
+
+Una vez que los contenedores estén en marcha (incluyendo la aplicación, la base de datos y Redis), la API estará disponible en:
+
+```
+http://localhost:4000
+```
+
+Para verificar los endpoints y la documentación de Swagger, ingresa a:
+
+```
+http://localhost:4000/api-docs
+```
+
+## Detener Contenedores
+
+Para detener los contenedores, puedes usar:
+
+```bash
+docker-compose down
+```
+
+Para detener los contenedores, borrar el volumen utilizado y eliminar la imagen construida localmente:
+
+```bash
+docker-compose down --rmi local -v
+```
+
+## Endpoints
+
+### Crear un empleado
+
+- **URL**: `/empleados`
+- **Método**: `POST`
+- **Cuerpo**:
+
+  ```json
+  {
+      "Nombres": "Juan",
+      "Apellidos": "Pérez",
+      "Telefono": "123456789",
+      "Email": "juan.perez@empresa.com",
+      "Direccion": "Calle Falsa 123"
+  }
+  ```
+
+- **Respuestas**:
+  - `201`: Empleado insertado correctamente.
+  - `400`: Campos incompletos.
+  - `500`: Ocurrió un error.
+
+### Obtener todos los empleados
+
+- **URL**: `/empleados`
+- **Método**: `GET`
+- **Parámetros** (opcional):
+  - `page`: Número de página (por defecto 1)
+  - `limit`: Cantidad de empleados por página (por defecto 10)
+  - `filterField`: Campo para filtrar empleados
+  - `filterValue`: Valor para filtrar empleados
+
+- **Respuesta**:
+  - `200`: Lista de empleados.
+
+### Actualizar un empleado
+
+- **URL**: `/empleados/{id}`
+- **Método**: `PUT`
+- **Cuerpo**:
+
+  ```json
+  {
+      "Nombres": "Juan",
+      "Apellidos": "Pérez",
+      "Telefono": "987654321",
+      "Email": "juan.nuevo@empresa.com",
+      "Direccion": "Calle Nueva 123"
+  }
+  ```
+
+- **Respuestas**:
+  - `200`: Actualizado correctamente.
+  - `400`: Campos incompletos.
+  - `500`: Ocurrió un error.
+
+### Borrar un empleado
+
+- **URL**: `/empleados/{id}`
+- **Método**: `DELETE`
+- **Respuestas**:
+  - `200`: Empleado borrado correctamente.
+  - `404`: Empleado no encontrado.
+  - `500`: Ocurrió un error.
+
+### Obtener un empleado por ID
+
+- **URL**: `/empleados/{id}`
+- **Método**: `GET`
+- **Respuestas**:
+  - `200`: Empleado encontrado.
+  - `404`: Empleado no encontrado.
+  - `500`: Error en la base de datos.
+
