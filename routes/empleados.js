@@ -3,7 +3,7 @@ const empleado = express.Router();
 const db = require('../config/database');
 const redis = require('redis');
 
-// Modificar para recibir el cliente de Redis como argumento
+
 module.exports = (client) => {
     /**
      * @swagger
@@ -51,7 +51,7 @@ module.exports = (client) => {
             console.log(rows);
 
             if (rows.affectedRows == 1) {
-                // Limpiar el caché de empleados
+               
                 await client.del('empleados');
                 return res.status(201).json({ code: 201, message: "Empleado insertado correctamente" });
             }
@@ -85,7 +85,7 @@ module.exports = (client) => {
         const query = "DELETE FROM empleado WHERE IDEmpleado = ?";
         const rows = await db.query(query, [req.params.id]);
         if (rows.affectedRows == 1) {
-            // Limpiar el caché de empleados
+           
             await client.del('empleados');
             return res.status(200).json({ code: 200, message: "Empleado borrado correctamente" });
         }
@@ -137,7 +137,7 @@ module.exports = (client) => {
             const rows = await db.query(query, [Nombres, Apellidos, Telefono, Email, Direccion, req.params.id]);
 
             if (rows.affectedRows == 1) {
-                // Limpiar el caché de empleados
+              
                 await client.del('empleados');
                 return res.status(200).json({ code: 200, message: "Actualizado correctamente" });
             }
@@ -215,7 +215,7 @@ module.exports = (client) => {
             const rows = await db.query(query, queryParams);
 
             if (rows.affectedRows == 1) {
-                // Limpiar el caché de empleados
+                
                 await client.del('empleados');
                 return res.status(200).json({ code: 200, message: "Actualizado correctamente" });
             }
@@ -264,34 +264,33 @@ module.exports = (client) => {
     empleado.get('/', async (req, res, next) => {
         const { page = 1, limit = 10, filterField, filterValue } = req.query;
 
-        // Calcular el offset
+     
         const offset = (page - 1) * limit;
 
         try {
-            // Verificar el caché
+            
             const cacheKey = `empleados:page=${page}:limit=${limit}${filterField ? `:filterField=${filterField}:filterValue=${filterValue}` : ''}`;
             const cacheEmpleados = await client.get(cacheKey);
             if (cacheEmpleados) {
                 return res.status(200).json({ code: 200, message: JSON.parse(cacheEmpleados) });
             }
 
-            // Construir la consulta SQL
             let query = 'SELECT * FROM empleado';
             let queryParams = [];
 
-            // Agregar filtros si se proporcionan
+            
             if (filterField && filterValue) {
                 query += ' WHERE ?? = ?';
                 queryParams.push(filterField, filterValue);
             }
 
-            // Agregar límites y offset para la paginación
+            
             query += ' LIMIT ? OFFSET ?';
             queryParams.push(parseInt(limit), offset);
 
             const empleados = await db.query(query, queryParams);
 
-            // Obtener el total de empleados para calcular la cantidad de páginas
+            
             let totalQuery = 'SELECT COUNT(*) AS total FROM empleado';
             if (filterField && filterValue) {
                 totalQuery += ' WHERE ?? = ?';
@@ -299,9 +298,8 @@ module.exports = (client) => {
             }
 
             const [totalCount] = await db.query(totalQuery, queryParams);
-            const total = totalCount && totalCount[0] ? totalCount[0].total : 0; // Asegúrate de que totalCount sea válido
+            const total = totalCount && totalCount[0] ? totalCount[0].total : 0; 
 
-            // Guardar en caché
             await client.set(cacheKey, JSON.stringify({ total, page: parseInt(page), limit: parseInt(limit), data: empleados }), { EX: 60 });
 
             return res.status(200).json({
@@ -405,12 +403,12 @@ module.exports = (client) => {
             const query = "SELECT * FROM empleado WHERE Apellidos LIKE ? LIMIT ? OFFSET ?";
             const empleados = await db.query(query, [`%${lastname}%`, parseInt(limit), offset]);
 
-            // Obtener el total de empleados que coinciden con el apellido
+            
             const totalQuery = "SELECT COUNT(*) AS total FROM empleado WHERE Apellidos LIKE ?";
             const [totalCount] = await db.query(totalQuery, [`%${lastname}%`]);
             const total = totalCount && totalCount[0] ? totalCount[0].total : 0;
 
-            // Guardar en caché
+          
             await client.set(cacheKey, JSON.stringify({ total, page: parseInt(page), limit: parseInt(limit), data: empleados }), { EX: 60 });
 
             return res.status(200).json({
@@ -425,5 +423,5 @@ module.exports = (client) => {
         }
     });
 
-    return empleado; // Asegúrate de devolver el router
+    return empleado; 
 };

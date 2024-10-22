@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS rrhh;
 
+
 use rrhh;
 create table empleado(
 	IDEmpleado int primary key not null,

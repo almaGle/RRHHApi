@@ -1,7 +1,7 @@
 {
   "name": "Gestion de trabajadores",
   "version": "1.0.0",
-  "description": "sistema de recursos humanos en node.js",
+  "description": "sistema de recursos humanos",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

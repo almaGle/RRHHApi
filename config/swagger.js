@@ -3,19 +3,19 @@ const swaggerUi = require('swagger-ui-express');
 
 const swaggerOptions = {
     swaggerDefinition: {
-        openapi: '3.0.0', // Versión de OpenAPI
+        openapi: '3.0.0', 
         info: {
-            title: 'API de Gestión de Empleados', // Título de la API
-            version: '1.0.0', // Versión de la API
-            description: 'API para gestionar empleados con características de CRUD', // Descripción
+            title: 'API de Gestión de Empleados', 
+            version: '1.0.0', 
+            description: 'API para gestionar empleados con características de CRUD', 
         },
         servers: [
             {
-                url: 'http://localhost:4000', // URL de tu servidor
+                url: 'http://localhost:4000', 
             },
         ],
     },
-    apis: ['./routes/*.js'], // Ruta donde se encuentran tus archivos de rutas
+    apis: ['./routes/*.js'], 
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);

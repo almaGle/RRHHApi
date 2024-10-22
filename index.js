@@ -1,7 +1,7 @@
 // dependencias
 const morgan = require('morgan');
 const express = require('express');
-const { swaggerUi, swaggerDocs } = require('./config/swagger'); // Asegúrate de que la ruta sea correcta
+const { swaggerUi, swaggerDocs } = require('./config/swagger'); 
 const redis = require('redis');
 
 // routers
