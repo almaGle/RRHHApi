@@ -24,8 +24,8 @@ Esta es una API REST para gestionar empleados, que permite realizar operaciones 
 1. Clona este repositorio en el directorio de tu preferencia:
 
    ```bash
-   git clone https://github.com/tu_usuario/tu_repositorio.git
-   cd tu_repositorio
+  git clone https://github.com/almaGle/RRHHApi
+   cd RRHHApi
    ```
 
 2. Instala las dependencias de Node.js:
