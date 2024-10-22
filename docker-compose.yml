@@ -24,10 +24,9 @@ services:
     image: mysql:8
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_ROOT_PASSWORD: ""
       MYSQL_DATABASE: rrhh
-      MYSQL_USER: root  # Agrega un usuario (opcional)
-      MYSQL_PASSWORD:   # Agrega una contraseña para el usuario (opcional)
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       
     volumes:
       - db-data:/var/lib/mysql
