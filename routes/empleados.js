@@ -150,7 +150,7 @@ module.exports = (client) => {
      * @swagger
      * /empleados/{id}:
      *   patch:
-     *     summary: Actualizar solo un campo de un empleado
+     *     summary: Actualizar solo un campo de un empleado (nombre)
      *     description: Actualiza parcialmente la información de un empleado existente.
      *     parameters:
      *       - in: path
@@ -168,14 +168,7 @@ module.exports = (client) => {
      *             properties:
      *               Nombres:
      *                 type: string
-     *               Apellidos:
-     *                 type: string
-     *               Telefono:
-     *                 type: string
-     *               Email:
-     *                 type: string
-     *               Direccion:
-     *                 type: string
+     *               
      *     responses:
      *       200:
      *         description: Actualizado correctamente.
@@ -184,46 +177,21 @@ module.exports = (client) => {
      *       500:
      *         description: Ocurrió un error.
      */
-    empleado.patch("/:id([0-9]{1,3})", async (req, res, next) => {
-        const fieldsToUpdate = [];
-        const queryParams = [];
-
-        if (req.body.Nombres) {
-            fieldsToUpdate.push('Nombres=?');
-            queryParams.push(req.body.Nombres);
-        }
-        if (req.body.Apellidos) {
-            fieldsToUpdate.push('Apellidos=?');
-            queryParams.push(req.body.Apellidos);
-        }
-        if (req.body.Telefono) {
-            fieldsToUpdate.push('Telefono=?');
-            queryParams.push(req.body.Telefono);
-        }
-        if (req.body.Email) {
-            fieldsToUpdate.push('Email=?');
-            queryParams.push(req.body.Email);
-        }
-        if (req.body.Direccion) {
-            fieldsToUpdate.push('Direccion=?');
-            queryParams.push(req.body.Direccion);
-        }
-
-        if (fieldsToUpdate.length > 0) {
-            const query = `UPDATE empleado SET ${fieldsToUpdate.join(', ')} WHERE IDEmpleado=?`;
-            queryParams.push(req.params.id);
-            const rows = await db.query(query, queryParams);
-
-            if (rows.affectedRows == 1) {
+    empleado.patch("/:id([1-9]{1,3})", async (req,res, next)=>{
+        if (req.body.Nombres){
+                let query =`UPDATE empleado SET Nombres='${req.body.Nombres}' WHERE IDEmpleado=${req.params.id}`;
                 
-                await client.del('empleados');
-                return res.status(200).json({ code: 200, message: "Actualizado correctamente" });
-            }
-            return res.status(500).json({ code: 500, message: "Ocurrió un error" });
-        }
-        return res.status(400).json({ code: 400, message: "Campos incompletos" });
-    });
-
+        
+                const rows=await db.query(query);
+                
+            
+                if (rows.affectedRows==1){
+                    return res.status(200).json({code:201, message:"actulizado correctamente"});
+                }
+                return res.status(500).json({code:500, message:"ocurrio un eror"});
+                }
+                return res.status(500).json({code:500, message:"campos incompletos"});    
+        });
     /**
      * @swagger
      * /empleados:
