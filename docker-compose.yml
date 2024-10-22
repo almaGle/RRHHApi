@@ -26,8 +26,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "admin"
       MYSQL_DATABASE: rrhh
-      MYSQL_USER: admin  # Agrega un usuario (opcional)
-      MYSQL_PASSWORD: admin123  # Agrega una contraseña para el usuario (opcional)
+      MYSQL_USER: root  # Agrega un usuario (opcional)
+      MYSQL_PASSWORD:   # Agrega una contraseña para el usuario (opcional)
       
     volumes:
       - db-data:/var/lib/mysql

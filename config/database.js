@@ -4,8 +4,8 @@ const util = require('util')
 const pool = mysql.createPool({
     connectionLimit: 10,
     host: 'host.docker.internal',
-    user: 'admin',
-    password: 'admin123',
+    user: 'root',
+    password: '',
     database: 'rrhh',
 })
 
